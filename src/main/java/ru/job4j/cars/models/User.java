@@ -21,6 +21,7 @@ public class User {
     private String login;
     private String email;
     private String password;
+    private String phone;
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private Set<Post> posts;
 
@@ -66,6 +67,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public void addPost(Post value) {
