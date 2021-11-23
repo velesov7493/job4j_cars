@@ -34,9 +34,8 @@ CREATE TABLE tr_posts (
     id_author INTEGER NOT NULL REFERENCES tz_users (id) ON DELETE CASCADE,
     id_carbrand INTEGER NOT NULL REFERENCES tz_brands (id) ON DELETE CASCADE,
     id_bodytype INTEGER NOT NULL REFERENCES tz_body_types (id) ON DELETE CASCADE,
-    id_photo INTEGER DEFAULT 1 REFERENCES tz_photos (id) ON DELETE SET DEFAULT,
+    id_photo INTEGER REFERENCES tz_photos (id) ON DELETE SET NULL,
+    price NUMERIC(10,2) NOT NULL,
     created TIMESTAMP DEFAULT current_timestamp,
     description TEXT NOT NULL
 );
-
-ALTER SEQUENCE IF EXISTS tr_posts_id_seq RESTART WITH 2;

@@ -1,6 +1,7 @@
 package ru.job4j.cars.models;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
@@ -17,10 +18,13 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "postsIdSeq")
     private int id;
     private String description;
-    @Column(name = "is_sold")
+    @Column(name = "is_sold", insertable = false)
     private short sold;
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(insertable = false)
     private Date created;
+    @Column(scale = 2, precision = 10)
+    private BigDecimal price;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_author")
     private User author;
@@ -30,9 +34,13 @@ public class Post {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_bodytype")
     private BodyType bodyType;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_photo")
     private Photo photo;
+
+    public Post() {
+        price = new BigDecimal(0);
+    }
 
     public int getId() {
         return id;
@@ -96,6 +104,14 @@ public class Post {
 
     public void setPhoto(Photo photo) {
         this.photo = photo;
+    }
+
+    public float getPrice() {
+        return price.floatValue();
+    }
+
+    public void setPrice(float value) {
+        price = new BigDecimal(value);
     }
 
     @Override

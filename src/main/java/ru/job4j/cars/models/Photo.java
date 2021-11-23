@@ -3,6 +3,8 @@ package ru.job4j.cars.models;
 import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "tz_photos")
 public class Photo {
 
     @Id

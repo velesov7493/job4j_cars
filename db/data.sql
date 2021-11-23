@@ -10,5 +10,3 @@ INSERT INTO tz_brands (name) VALUES
 
 INSERT INTO tz_users (login, name, email, pass, phone) VALUES
 ('sysdba', 'Власов Александр Сергеевич', 'velesov7493@gmail.com', 'AB4154A7C451F56E9B7FF1537758DDD0C619F8BE', '+79611681681');
-
-INSERT INTO tz_photos (id, mimeType) VALUES (1, 'image/png');
