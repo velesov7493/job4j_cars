@@ -18,11 +18,11 @@ public class BodyType {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "carBodyTypesIdSeq")
     private int id;
     private String name;
-    @OneToMany(mappedBy = "bodyType", cascade = CascadeType.ALL)
-    private Set<Post> posts;
 
-    public BodyType() {
-        posts = new HashSet<>();
+    public static BodyType of(String aName) {
+        BodyType result = new BodyType();
+        result.setName(aName);
+        return result;
     }
 
     public int getId() {
@@ -41,19 +41,6 @@ public class BodyType {
         this.name = name;
     }
 
-    public void addPost(Post value) {
-        value.setBodyType(this);
-        posts.add(value);
-    }
-
-    public void deletePost(Post value) {
-        posts.remove(value);
-    }
-
-    public Set<Post> getPosts() {
-        return new HashSet<>(posts);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -63,13 +50,11 @@ public class BodyType {
             return false;
         }
         BodyType bodyType = (BodyType) o;
-        return
-                id == bodyType.id
-                && Objects.equals(name, bodyType.name);
+        return id == bodyType.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id);
     }
 }

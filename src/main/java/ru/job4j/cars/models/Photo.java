@@ -4,16 +4,10 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tz_photos")
+@Table(name = "tr_photos")
 public class Photo {
 
     @Id
-    @SequenceGenerator(
-            name = "photosIdSeq",
-            sequenceName = "tz_photos_id_seq",
-            allocationSize = 1
-    )
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "photosIdSeq")
     private int id;
     private String mimeType;
 
@@ -42,13 +36,11 @@ public class Photo {
             return false;
         }
         Photo photo = (Photo) o;
-        return
-                id == photo.id
-                && Objects.equals(mimeType, photo.mimeType);
+        return id == photo.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, mimeType);
+        return Objects.hash(id);
     }
 }

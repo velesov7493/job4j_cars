@@ -18,11 +18,11 @@ public class Brand {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "carBrandsIdSeq")
     private int id;
     private String name;
-    @OneToMany(mappedBy = "carBrand", cascade = CascadeType.ALL)
-    private Set<Post> posts;
 
-    public Brand() {
-        posts = new HashSet<>();
+    public static Brand of(String aName) {
+        Brand result = new Brand();
+        result.setName(aName);
+        return result;
     }
 
     public int getId() {
@@ -41,19 +41,6 @@ public class Brand {
         this.name = name;
     }
 
-    public void addPost(Post value) {
-        value.setCarBrand(this);
-        posts.add(value);
-    }
-
-    public void deletePost(Post value) {
-        posts.remove(value);
-    }
-
-    public Set<Post> getPosts() {
-        return new HashSet<>(posts);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -63,13 +50,11 @@ public class Brand {
             return false;
         }
         Brand brand = (Brand) o;
-        return
-                id == brand.id
-                && Objects.equals(name, brand.name);
+        return id == brand.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id);
     }
 }

@@ -25,8 +25,10 @@ public class HibernateUtils {
     }
 
     public static void releaseSessionFactory() {
-        SF.close();
-        StandardServiceRegistryBuilder.destroy(REGISTRY);
+        if (SF.isOpen()) {
+            SF.close();
+            StandardServiceRegistryBuilder.destroy(REGISTRY);
+        }
     }
 
     public static <T> T select(Function<Session, T> command) {
@@ -36,7 +38,6 @@ public class HibernateUtils {
         boolean error = false;
         try {
             result = command.apply(session);
-            session.flush();
         } catch (Exception ex) {
             error = true;
             LOG.error("Ошибка выполнения запроса", ex);
@@ -57,7 +58,6 @@ public class HibernateUtils {
         boolean error = false;
         try {
             dmlCommand.accept(session);
-            session.flush();
         } catch (Exception ex) {
             error = true;
             LOG.error("Ошибка выполнения запроса", ex);

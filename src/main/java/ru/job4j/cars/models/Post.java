@@ -17,13 +17,14 @@ public class Post {
     )
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "postsIdSeq")
     private int id;
+    private String model;
     private String description;
     @Column(name = "is_sold", insertable = false)
     private short sold;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(insertable = false)
     private Date created;
-    @Column(scale = 2, precision = 10)
+    @Column(precision = 15, scale = 2)
     private BigDecimal price;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_author")
@@ -35,7 +36,7 @@ public class Post {
     @JoinColumn(name = "id_bodytype")
     private BodyType bodyType;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_photo")
+    @JoinColumn(name = "id")
     private Photo photo;
 
     public Post() {
@@ -48,6 +49,14 @@ public class Post {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public String getDescription() {
@@ -114,6 +123,12 @@ public class Post {
         price = new BigDecimal(value);
     }
 
+    public boolean isNew() {
+        long diff = System.currentTimeMillis() - created.getTime();
+        int daysDiff = (int) (diff / (1000 * 60 * 60 * 24));
+        return daysDiff <= 1;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -123,19 +138,12 @@ public class Post {
             return false;
         }
         Post post = (Post) o;
-        return
-                id == post.id
-                && sold == post.sold
-                && Objects.equals(description, post.description)
-                && Objects.equals(created, post.created)
-                && Objects.equals(author, post.author)
-                && Objects.equals(carBrand, post.carBrand)
-                && Objects.equals(bodyType, post.bodyType)
-                && Objects.equals(photo, post.photo);
+        return id == post.id;
+
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, sold, created, author, carBrand, bodyType, photo);
+        return Objects.hash(id);
     }
 }

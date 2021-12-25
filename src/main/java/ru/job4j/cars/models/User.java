@@ -22,12 +22,8 @@ public class User {
     private String email;
     private String password;
     private String phone;
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
-    private Set<Post> posts;
 
-    public User() {
-        posts = new HashSet<>();
-    }
+    public User() { }
 
     public int getId() {
         return id;
@@ -77,19 +73,6 @@ public class User {
         this.phone = phone;
     }
 
-    public void addPost(Post value) {
-        value.setAuthor(this);
-        posts.add(value);
-    }
-
-    public void deletePost(Post value) {
-        posts.remove(value);
-    }
-
-    public Set<Post> getPosts() {
-        return new HashSet<>(posts);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -99,16 +82,11 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return
-                id == user.id
-                && Objects.equals(name, user.name)
-                && Objects.equals(login, user.login)
-                && Objects.equals(email, user.email)
-                && Objects.equals(password, user.password);
+        return id == user.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, login, email, password);
+        return Objects.hash(id);
     }
 }
