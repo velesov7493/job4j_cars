@@ -11,12 +11,14 @@ import java.util.function.Function;
 
 public class HbmBrandsRepository implements Store<Integer, Brand> {
 
-    private static final HbmBrandsRepository INSTANCE = new HbmBrandsRepository();
+    private static final class Holder {
+        private static final HbmBrandsRepository INSTANCE = new HbmBrandsRepository();
+    }
 
     private HbmBrandsRepository() { }
 
     public static Store<Integer, Brand> getInstance() {
-        return INSTANCE;
+        return Holder.INSTANCE;
     }
 
     @Override

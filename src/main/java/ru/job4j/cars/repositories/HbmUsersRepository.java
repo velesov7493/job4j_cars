@@ -12,12 +12,14 @@ import java.util.function.Function;
 
 public class HbmUsersRepository implements UserStore {
 
-    private static final HbmUsersRepository INSTANCE = new HbmUsersRepository();
+    private static final class Holder {
+        private static final HbmUsersRepository INSTANCE = new HbmUsersRepository();
+    }
 
     private HbmUsersRepository() { }
 
     public static UserStore getInstance() {
-        return INSTANCE;
+        return Holder.INSTANCE;
     }
 
     @Override

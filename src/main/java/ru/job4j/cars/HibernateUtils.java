@@ -14,26 +14,29 @@ import java.util.function.Function;
 
 public class HibernateUtils {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HibernateUtils.class);
-    private static final StandardServiceRegistry REGISTRY =
+    private static final class Holder {
+        private static final StandardServiceRegistry REGISTRY =
             new StandardServiceRegistryBuilder().configure().build();
-    private static final SessionFactory SF =
+        private static final SessionFactory SF =
             new MetadataSources(REGISTRY).buildMetadata().buildSessionFactory();
+    }
+
+    private static final Logger LOG = LoggerFactory.getLogger(HibernateUtils.class);
 
     public static SessionFactory getSessionFactory() {
-        return SF;
+        return Holder.SF;
     }
 
     public static void releaseSessionFactory() {
-        if (SF.isOpen()) {
-            SF.close();
-            StandardServiceRegistryBuilder.destroy(REGISTRY);
+        if (Holder.SF.isOpen()) {
+            Holder.SF.close();
+            StandardServiceRegistryBuilder.destroy(Holder.REGISTRY);
         }
     }
 
     public static <T> T select(Function<Session, T> command) {
         T result = null;
-        Session session = SF.openSession();
+        Session session = Holder.SF.openSession();
         Transaction tx = session.beginTransaction();
         boolean error = false;
         try {
@@ -53,7 +56,7 @@ public class HibernateUtils {
     }
 
     public static boolean execute(Consumer<Session> dmlCommand) {
-        Session session = SF.openSession();
+        Session session = Holder.SF.openSession();
         Transaction tx = session.beginTransaction();
         boolean error = false;
         try {

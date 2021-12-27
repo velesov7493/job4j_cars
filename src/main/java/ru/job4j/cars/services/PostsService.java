@@ -17,12 +17,14 @@ import java.util.List;
 
 public class PostsService {
 
-	private static final PostsService INSTANCE = new PostsService();
+	private static final class Holder {
+		private static final PostsService INSTANCE = new PostsService();
+	}
 
 	private PostsService() { }
 
 	public static PostsService getInstance() {
-		return INSTANCE;
+		return Holder.INSTANCE;
 	}
 
 	public Post findById(Integer id) {

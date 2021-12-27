@@ -16,13 +16,16 @@ import java.util.function.Function;
 
 public class HbmPostsRepository implements PostStore {
 
-    private static final HbmPostsRepository INSTANCE = new HbmPostsRepository();
+    private static final class Holder {
+        private static final HbmPostsRepository INSTANCE = new HbmPostsRepository();
+    }
+
     private static final Logger LOG = LoggerFactory.getLogger(HbmPostsRepository.class);
 
     private HbmPostsRepository() { }
 
     public static PostStore getInstance() {
-        return INSTANCE;
+        return Holder.INSTANCE;
     }
 
     @Override

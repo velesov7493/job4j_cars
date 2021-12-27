@@ -16,13 +16,16 @@ import java.util.function.Function;
 
 public class CmbPhotosRepository implements PhotoStore {
 
+    private static final class Holder {
+        private static final CmbPhotosRepository INSTANCE = new CmbPhotosRepository();
+    }
+
     private static final Logger LOG = LoggerFactory.getLogger(CmbPhotosRepository.class);
-    private static final CmbPhotosRepository INSTANCE = new CmbPhotosRepository();
 
     private String imagesDir;
 
     private CmbPhotosRepository() {
-        Properties cfg = AppSettings.loadProperties();
+        Properties cfg = AppSettings.getProperties();
         imagesDir = cfg.getProperty("dir.images");
         File folder = new File(imagesDir);
         boolean result = folder.exists();
@@ -37,7 +40,7 @@ public class CmbPhotosRepository implements PhotoStore {
     }
 
     public static PhotoStore getInstance() {
-        return INSTANCE;
+        return Holder.INSTANCE;
     }
 
     private String fileNameById(int imageId) {

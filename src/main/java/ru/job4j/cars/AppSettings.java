@@ -11,23 +11,21 @@ import java.util.Properties;
 
 public class AppSettings {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AppSettings.class.getName());
-    private static SoftReference<Properties> settings;
-    private static Gson gson;
+    private static final class Holder {
 
-    public static synchronized Properties loadProperties() {
-        Properties s = settings == null ? null : settings.get();
-        if (s == null) {
-            s = new Properties();
+        private static final Properties SETTINGS = loadProperties();
+        private static final Gson GSON = getGson();
+
+        private static Properties loadProperties() {
+            Properties s = new Properties();
             try (
-                    InputStream in =
-                         AppSettings.class
-                         .getClassLoader()
-                         .getResourceAsStream("webapp.properties")
+                InputStream in =
+                    AppSettings.class
+                        .getClassLoader()
+                        .getResourceAsStream("webapp.properties")
             ) {
                 if (in != null) {
                     s.load(in);
-                    settings = new SoftReference<>(s);
                 }
             } catch (Throwable ex) {
                 LOG.error(
@@ -36,17 +34,24 @@ public class AppSettings {
                 LOG.info("Выключаюсь...");
                 System.exit(2);
             }
+            return s;
         }
-        return s;
-    }
 
-    public static synchronized Gson getGson() {
-        if (gson == null) {
-            gson =
+        private static Gson getGson() {
+            return
                     new GsonBuilder()
                     .setDateFormat("dd.MM.yyyy")
                     .create();
         }
-        return gson;
+    }
+
+    private static final Logger LOG = LoggerFactory.getLogger(AppSettings.class.getName());
+
+    public static Gson getGson() {
+        return Holder.GSON;
+    }
+
+    public static Properties getProperties() {
+        return Holder.SETTINGS;
     }
 }

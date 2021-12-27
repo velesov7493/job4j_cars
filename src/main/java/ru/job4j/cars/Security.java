@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class Security {
 
-    private static Logger log = LoggerFactory.getLogger(Security.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(Security.class.getName());
 
     private static String hexString(byte[] in) {
         StringBuilder builder = new StringBuilder();
@@ -27,7 +27,7 @@ public class Security {
             msgDigest.update(msg.getBytes(), 0, msg.length());
             sha1 = hexString(msgDigest.digest());
         } catch (NoSuchAlgorithmException ex) {
-            log.error("Алгоритм хэширования SHA1 не найден", ex);
+            LOG.error("Алгоритм хэширования SHA1 не найден", ex);
         }
         return sha1;
     }

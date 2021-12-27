@@ -10,7 +10,9 @@ import java.nio.charset.StandardCharsets;
 
 public class JsonService {
 
-    private static final JsonService INSTANCE = new JsonService();
+    private static final class Holder {
+        private static final JsonService INSTANCE = new JsonService();
+    }
 
     private final Gson gson;
 
@@ -19,7 +21,7 @@ public class JsonService {
     }
 
     public static JsonService getInstance() {
-        return INSTANCE;
+        return Holder.INSTANCE;
     }
 
     public <T> void writeToStream(T value, OutputStream out) throws IOException {

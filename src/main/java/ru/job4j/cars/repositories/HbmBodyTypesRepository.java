@@ -11,12 +11,14 @@ import java.util.function.Function;
 
 public class HbmBodyTypesRepository implements Store<Integer, BodyType> {
 
-    private static final HbmBodyTypesRepository INSTANCE = new HbmBodyTypesRepository();
+    private static final class Holder {
+        private static final HbmBodyTypesRepository INSTANCE = new HbmBodyTypesRepository();
+    }
 
     private HbmBodyTypesRepository() { }
 
     public static Store<Integer, BodyType> getInstance() {
-        return INSTANCE;
+        return Holder.INSTANCE;
     }
 
     @Override
